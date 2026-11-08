@@ -1,15 +1,49 @@
-<?php $pct = $sum['total'] > 0 ? min(100, round($paid / $sum['total'] * 100)) : 0; ?>
-    <section class="stats">
-        <div class="stat hero"><div><small>Nilai Invoice</small><br>
-            <strong data-count="<?= (float)$sum['total'] ?>" data-prefix="Rp "><?= rupiah($sum['total']) ?></strong></div>
-            <div class="meter"><span>Terbayar <?= $pct ?>%</span><div class="bar"><i style="--w:<?= $pct ?>%"></i></div></div></div>
-        <div class="stat"><small>Total Invoice</small>
-            <strong data-count="<?= (int)$sum['n'] ?>"><?= $sum['n'] ?></strong></div>
-        <div class="stat"><small>Total Pembayaran</small>
-            <strong data-count="<?= (float)$paid ?>" data-prefix="Rp "><?= rupiah($paid) ?></strong></div>
-        <div class="stat"><small>Belum Terbayar</small>
-            <strong data-count="<?= (float)($sum['total'] - $paid) ?>" data-prefix="Rp "><?= rupiah($sum['total'] - $paid) ?></strong></div>
-    </section>
+<?php
+$remaining = max(0, (float)$sum['total'] - (float)$paid);
+
+$pct = $sum['total'] > 0
+    ? min(100, round($paid / $sum['total'] * 100))
+    : 0;
+?>
+
+<section class="stats">
+    <div class="stat hero">
+        <div>
+            <small>Nilai Invoice</small><br>
+            <strong data-count="<?= (float)$sum['total'] ?>" data-prefix="Rp ">
+                <?= rupiah($sum['total']) ?>
+            </strong>
+        </div>
+
+        <div class="meter">
+            <span>Terbayar <?= $pct ?>%</span>
+            <div class="bar">
+                <i style="--w:<?= $pct ?>%"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="stat">
+        <small>Total Invoice</small>
+        <strong data-count="<?= (int)$sum['n'] ?>">
+            <?= $sum['n'] ?>
+        </strong>
+    </div>
+
+    <div class="stat">
+        <small>Total Pembayaran</small>
+        <strong data-count="<?= (float)$paid ?>" data-prefix="Rp ">
+            <?= rupiah($paid) ?>
+        </strong>
+    </div>
+
+    <div class="stat">
+        <small>Belum Terbayar</small>
+        <strong data-count="<?= $remaining ?>" data-prefix="Rp ">
+            <?= rupiah($remaining) ?>
+        </strong>
+    </div>
+</section>
 
     <section class="panel">
         <h2>Invoice Terbaru</h2>
