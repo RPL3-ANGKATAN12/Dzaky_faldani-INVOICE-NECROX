@@ -1,0 +1,19 @@
+# File konfigurasi rahasia
+.env
+.env.*
+
+# File sementara
+*.log
+*.tmp
+
+# Upload pengguna
+uploads/*
+!uploads/.gitkeep
+
+# Editor
+.vscode/
+.idea/
+
+# Sistem operasi
+.DS_Store
+Thumbs.db

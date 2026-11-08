@@ -1,0 +1,4 @@
+Alur aplikasi:
+Login -> Dashboard -> Kelola Data PT dan Produk -> Buat Invoice (multi item) -> Detail Invoice -> Catat Pembayaran -> Status pembayaran diperbarui -> Laporan / Ekspor CSV.
+Admin dapat mengelola pengguna. Aktivitas login dan perubahan penting dicatat.
+Database utama: users, customers, categories, products, invoices, invoice_items, payments, activity_logs, settings.

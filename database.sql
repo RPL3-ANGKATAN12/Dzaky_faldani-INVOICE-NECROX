@@ -1,0 +1,15 @@
+CREATE DATABASE IF NOT EXISTS jotun_web_full CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE jotun_web_full;
+CREATE TABLE users(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100) NOT NULL,username VARCHAR(60) UNIQUE NOT NULL,password VARCHAR(255) NOT NULL,role ENUM('admin','staff') DEFAULT 'staff',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE customers(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(150) NOT NULL,company_code VARCHAR(60),phone VARCHAR(40),email VARCHAR(120),address TEXT,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE categories(id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100) NOT NULL UNIQUE);
+CREATE TABLE products(id INT AUTO_INCREMENT PRIMARY KEY,sku VARCHAR(60) UNIQUE,name VARCHAR(150) NOT NULL,category_id INT NULL,unit VARCHAR(30) DEFAULT 'pcs',price DECIMAL(15,2) NOT NULL DEFAULT 0,stock INT NOT NULL DEFAULT 0,FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE SET NULL);
+CREATE TABLE invoices(id INT AUTO_INCREMENT PRIMARY KEY,invoice_no VARCHAR(80) UNIQUE NOT NULL,customer_id INT NOT NULL,invoice_date DATE NOT NULL,due_date DATE NULL,status ENUM('Belum Lunas','Sebagian','Lunas') DEFAULT 'Belum Lunas',notes TEXT,total DECIMAL(15,2) NOT NULL DEFAULT 0,created_by INT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(customer_id) REFERENCES customers(id),FOREIGN KEY(created_by) REFERENCES users(id) ON DELETE SET NULL);
+CREATE TABLE invoice_items(id INT AUTO_INCREMENT PRIMARY KEY,invoice_id INT NOT NULL,product_id INT NULL,item_name VARCHAR(180) NOT NULL,qty DECIMAL(12,2) NOT NULL,price DECIMAL(15,2) NOT NULL,subtotal DECIMAL(15,2) NOT NULL,FOREIGN KEY(invoice_id) REFERENCES invoices(id) ON DELETE CASCADE,FOREIGN KEY(product_id) REFERENCES products(id) ON DELETE SET NULL);
+CREATE TABLE payments(id INT AUTO_INCREMENT PRIMARY KEY,invoice_id INT NOT NULL,payment_date DATE NOT NULL,amount DECIMAL(15,2) NOT NULL,method VARCHAR(60),notes TEXT,FOREIGN KEY(invoice_id) REFERENCES invoices(id) ON DELETE CASCADE);
+CREATE TABLE activity_logs(id INT AUTO_INCREMENT PRIMARY KEY,user_id INT NULL,activity VARCHAR(255),created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE SET NULL);
+CREATE TABLE settings(setting_key VARCHAR(80) PRIMARY KEY,setting_value TEXT);
+INSERT INTO categories(name) VALUES('Cat'),('Peralatan'),('Lainnya');
+INSERT INTO customers(name,company_code) VALUES('PT Maju Jaya','MJ'),('PT Nusantara','NS'),('PT Sejahtera','SJ');
+INSERT INTO products(sku,name,category_id,unit,price,stock) VALUES('JTN-001','Cat Interior',1,'pail',450000,30),('JTN-002','Cat Exterior',1,'pail',550000,20),('JTN-003','Kuas',2,'pcs',35000,100);
+INSERT INTO settings VALUES('company_name','JOTUN WEB'),('company_address','Batam, Indonesia');
